@@ -1,0 +1,55 @@
+ul.ccard_logo {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+.visa, .mastercard, .amex, .discover, .diners, .jcb, .maestro, .laser, .solo {
+	display: inline-block;
+	width: 50px;
+	height: 30px;
+	overflow: hidden;
+	text-align: left;
+	text-indent: -999px;
+	background: url(sprite-cardimg.png) 0 0 no-repeat;
+}
+
+.mastercard {
+	background-position: -55px 0;
+}
+
+.amex {
+	background-position: -110px 0;
+}
+
+.discover {
+	background-position: -165px 0;
+}
+
+.diners {
+	background-position: -220px 0;
+}
+
+.jcb {
+	background-position: -660px 0;
+}
+
+.maestro {
+	background-position: -330px 0;
+}
+
+.solo {
+	background-position: -600px 0;
+}
+
+.laser {
+	background-position: -550px 0;
+}
+
+.is_visa li, .is_mastercard li, .is_amex li, .is_discover li, .is_diners li, .is_jcb li, .is_maestro li, .is_solo li, .is_laser li, .is_nothing li {
+	opacity: .2;
+}
+
+.is_visa li.visa, .is_mastercard li.mastercard, .is_amex li.amex, .is_discover li.discover, .is_diners li.diners, .is_jcb li.jcb, .is_maestro li.maestro, .is_laser li.laser, .is_solo li.solo {
+	opacity: 1;
+}
