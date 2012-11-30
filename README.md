@@ -1,6 +1,4 @@
-jQuery Credit Card Type Detector Plugin
-
-Determines possible credit card types as a user enters their credit card number.
+Determines possible credit card types as a user enters their credit card number as well as formats it properly.
 
 The following are credit card numbers in a valid format:
 
