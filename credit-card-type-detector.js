@@ -1,5 +1,6 @@
 (function( $ ) {
 	$.fn.creditcard_type = function( options ) {
+
 		var settings = $.extend( {
 				'credit_card_logos_id': '.ccard_logo'
 			}, options),
@@ -25,16 +26,6 @@
 			//JCB regular expressions
 			jcb_regex = new RegExp('^2[1]?$|^21[3]?$|^1[8]?$|^18[0]?$|^(?:2131|1800)[0-9]{0,11}$|^3[5]?$|^35[0-9]{0,14}$');
 
-			//Maestro regular expressions
-			//maestro_regex = new RegExp('^(5[06-8]|6d)d{10,17}$'),
-
-			//Solo regular expressons
-			//solo_regex = new RegExp('6767d{12}(d{2,3})?$'),
-
-			//Laser regular expressions
-			//laser_regex = new RegExp('^(6304|6706|6771|6709)d{8}(d{4}|d{6,7})?$');
-
-
 		return this.each(function(){
 			// as the user types
 			$(this).keyup(function(){
@@ -47,44 +38,41 @@
 				if ( cur_val.match(visa_regex) ) {
 					$(logos_object).addClass('is_visa');
 					$("#check_card_number").mask("9999 9999 9999 9?999");
-
-
 				} else {
 					$(logos_object).removeClass('is_visa');
 				}
 
 				if ( cur_val.match(mastercard_regex) ) {
-					$("#check_card_number").mask("9999 9999 9999 9999");
 					$(logos_object).addClass('is_mastercard');
+					$("#check_card_number").mask("9999 9999 9999 9999");
 				} else {
 					$(logos_object).removeClass('is_mastercard');
 				}
 
 				if ( cur_val.match(amex_regex) ) {
 					$(logos_object).addClass('is_amex');
-					$("#check_card_number").mask("9999 999999 99999");
-
+					$("#check_card_number").mask("999 999999 99999");
 				} else {
 					$(logos_object).removeClass('is_amex');
 				}
 
 				if ( cur_val.match(diners_regex) ) {
-					$("#check_card_number").mask("9999 999999 9999");
 					$(logos_object).addClass('is_diners');
+					$("#check_card_number").mask("999 999999 99999");
 				} else {
 					$(logos_object).removeClass('is_diners');
 				}
 
 				if ( cur_val.match(discover_regex) ) {
-					$("#check_card_number").mask("9999 9999 9999 9999");
 					$(logos_object).addClass('is_discover');
+					$("#check_card_number").mask("9999 9999 9999 9999");
 				} else {
 					$(logos_object).removeClass('is_discover');
 				}
 
 				if ( cur_val.match(jcb_regex) ) {
-					$("#check_card_number").mask("9999 9999 9999 9999");
 					$(logos_object).addClass('is_jcb');
+					$("#check_card_number").mask("9999 9999 9999 9999");
 				} else {
 					$(logos_object).removeClass('is_jcb');
 				}
@@ -99,6 +87,38 @@
 					$(logos_object).removeClass('is_nothing');
 				}
 			});
+
+			/*$(this).bind('input', function() {
+				var cur_val = $(this).val();
+
+				// get rid of spaces and dashes before using the regular expression
+				cur_val = cur_val.replace(/ /g,'').replace(/-/g,'');
+
+				if ( cur_val.match(visa_regex) ) {
+					$("#check_card_number").mask("9999 9999 9999 9?999");
+				}
+
+				if ( cur_val.match(mastercard_regex) ) {
+					$("#check_card_number").mask("9999 9999 9999 9999");
+				}
+
+				if ( cur_val.match(amex_regex) ) {
+					$("#check_card_number").mask("999 999999 99999");
+				}
+
+				if ( cur_val.match(diners_regex) ) {
+					$("#check_card_number").mask("9999 999999 9999");
+				}
+
+				if ( cur_val.match(discover_regex) ) {
+					$("#check_card_number").mask("9999 9999 9999 9999");
+				}
+
+				if ( cur_val.match(jcb_regex) ) {
+					$("#check_card_number").mask("9999 9999 9999 9999");
+				}
+
+			});*/
 		});
 	};
 })( jQuery );
