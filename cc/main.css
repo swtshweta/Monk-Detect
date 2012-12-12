@@ -1,0 +1,27 @@
+.card .card_icon,
+.card .status_icon {
+	display: inline-block;
+	vertical-align: bottom;
+	height: 23px;
+	width: 27px;
+}
+
+/* --- Card Icon --- */
+.card .card_icon {
+	background: transparent url('credit_card_sprites.png') no-repeat 30px 0;
+}
+
+/* Need to support IE6 */
+.card .card_icon.visa       { background-position:   0   0 !important; }
+.card .card_icon.mastercard { background-position: -30px 0 !important; }
+.card .card_icon.amex       { background-position: -60px 0 !important; }
+.card .card_icon.discover   { background-position: -90px 0 !important; }
+
+/* --- Card Status --- */
+.card .status_icon {
+	background: transparent url('status_sprites.png') no-repeat 33px 0;
+}
+.card .invalid              { color: #AD3333; background: #f8e7e7; }
+.card .valid                { color: #33AD33; background: #e7f8e7; }
+.card .invalid .status_icon { background-position: 3px 0 !important; }
+.card .valid .status_icon   { background-position: -27px 0 !important; }

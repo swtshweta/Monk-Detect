@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Detect Credit Card Type</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+	<form name="ccfrm" method="get">
+    <div class="card">
+      <label for="card_number">Enter Credit Card Number:</label>
+      <p>
+        <input name="card_number" type="text" value="" />
+        <span class="card_icon"></span>
+      </p>
+      <p class="status">
+        <span class="status_icon"></span>
+        <span class="status_message"></span>
+      </p>
+    </div>
+  </form>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+  <script src="jquery.cardcheck.js"></script>
+  <script>
+    jQuery(function($) {
+
+        // When the user focuses on the credit card input field, hide the status
+        $('.card input').bind('focus', function() {
+            $('.card .status').hide();
+        });
+
+        // When the user tabs or clicks away from the credit card input field, show the status
+        $('.card input').bind('blur', function() {
+            $('.card .status').show();
+        });
+
+        // Run jQuery.cardcheck on the input
+        $('.card input').cardcheck({
+            callback: function(result) {
+
+                var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
+                    message = '',
+                    types = '';
+
+                // Get the names of all accepted card types to use in the status message.
+                for (i in result.opts.types) {
+                    types += result.opts.types[i].name + ", ";
+                }
+                types = types.substring(0, types.length-2);
+
+                // Set status message
+                if (result.len < 1) {
+                    message = 'Please provide a credit card number.';
+                } else if (!result.cardClass) {
+                    message = 'We accept the following types of cards: ' + types + '.';
+                } else if (!result.validLen) {
+                    message = 'Please check that this number matches your ' + result.cardName + ' (it appears to be the wrong number of digits.)';
+                } else if (!result.validLuhn) {
+                    message = 'Please check that this number matches your ' + result.cardName + ' (did you mistype a digit?)';
+                } else {
+                    message = 'Great, looks like a valid ' + result.cardName + '.';
+                }
+
+                // Show credit card icon
+                $('.card .card_icon').removeClass().addClass('card_icon ' + result.cardClass);
+
+                // Show status message
+                $('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+            }
+        });
+    });
+  </script>
+
+</body>
+
+</html>
