@@ -139,7 +139,7 @@
                 className: 'discover',
                 checkType:  function(num) {
                     if (num.charAt(0) === '6') {
-                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644'
+                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num) >= '622126' && parseInt(num) <= '622925')
                     }
                     return false;
                 },
