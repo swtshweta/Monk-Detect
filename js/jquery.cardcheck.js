@@ -177,7 +177,7 @@ jQuery(function($) {
 
         // When the user focuses on the credit card input field, hide the status
         $('.card input').bind('focus', function() {
-			$("#ccard_number").unmask();
+			$("#ccard_number").unmask();//unmasking the text field as soon as user starts typing
             $('.card .status').hide();
         });
 
@@ -213,22 +213,22 @@ jQuery(function($) {
                 } else {
                     message = 'Great, looks like a valid ' + result.cardName + '.';
 					if ( result.validLen ) {
-						if ( result.cardName == 'Visa' ) {
+						if ( result.cardName == 'Visa' ) { //if the card is Visa
 							$("#ccard_number").mask("9999-9999-9999-9?999");
 						}
-						if ( result.cardName == 'American Express' ) {
+						if ( result.cardName == 'American Express' ) { //if the card is American Express
 							$("#ccard_number").mask("999-999999-999999");
 						}
-						if ( result.cardName == 'MasterCard' ) {
+						if ( result.cardName == 'MasterCard' ) { //if the card is MasterCard
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'Discover' ) {
+						if ( result.cardName == 'Discover' ) { //if the card is Discover
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'JCB' ) {
+						if ( result.cardName == 'JCB' ) { //if the card is JCB
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'Diners Club' ) {
+						if ( result.cardName == 'Diners Club' ) { //if the card is Diners Club
 							$("#ccard_number").mask("999-999999-99999");
 						}
 					}
