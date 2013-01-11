@@ -6,9 +6,9 @@
     var defaults;
 
     // Plugin Core
-    $.cardcheck = function(opts) {
+    $.cardcheck = function(option) {
         var cards = defaults.types || [],
-            num = (typeof opts === "string") ? opts : opts.num,
+            num = (typeof option === "string") ? option : option.num,
             len = num.length,
             type,
             validLen = false,
@@ -39,20 +39,20 @@
     };
 
     // Plugin Helper
-    $.fn.cardcheck = function(opts) {
-        // Allow for just a callback to be provided or extend opts
-        if (opts && $.isFunction(opts)) {
-            var _opts = $({}, defaults);
-            _opts.callback = opts;
-            opts = _opts;
+    $.fn.cardcheck = function(option) {
+        // Allow for just a callback to be provided or extend option
+        if (option && $.isFunction(option)) {
+            var _option = $({}, defaults);
+            _option.callback = option;
+            option = _option;
         }
         else {
-            opts = $.extend({}, defaults, opts);
+            option = $.extend({}, defaults, option);
         }
 
         // Fire on keyup
         return this.bind('keyup', function() {
-            var cards = opts.types || {},
+            var cards = option.types || {},
                 num = this.value.replace(/\D+/g, ''), // strip all non-digits
                 name = '',
                 className = '',
@@ -69,21 +69,21 @@
             }
 
             // Invoke callback
-            opts.callback.call(this, {
+            option.callback.call(this, {
                 num: num,
                 len: num.length,
                 cardName: name,
                 cardClass: className,
                 validLen: check.validLen,
                 validLuhn: check.validLuhn,
-                opts: opts
+                option: option
             });
 
         });
     };
 
     // Plugin Options
-    defaults = $.fn.cardcheck.opts = {
+    defaults = $.fn.cardcheck.option = {
         checkLuhn: function(num) {
             // http://en.wikipedia.org/wiki/Luhn_algorithm
             var len = num.length;
@@ -172,3 +172,73 @@
     };
 
 })(this, this.document, this.jQuery);
+
+jQuery(function($) {
+
+        // When the user focuses on the credit card input field, hide the status
+        $('.card input').bind('focus', function() {
+            $('.card .status').hide();
+        });
+
+        // When the user tabs or clicks away from the credit card input field, show the status
+        $('.card input').bind('blur', function(result) {
+            $('.card .status').show();
+
+			alert(result.cardName);
+			if ( result.cardName == 'Visa' ) {
+				$("#ccard_number").mask("9999 9999 9999 9?999");
+			}
+			if ( result.cardName == 'American Express' ) {
+				$("#ccard_number").mask("999 999999 99999");
+			}
+			if ( result.cardName == 'MasterCard' ) {
+				$("#ccard_number").mask("9999 9999 9999 9999");
+			}
+			if ( result.cardName == 'Discover' ) {
+				$("#ccard_number").mask("9999 9999 9999 9999");
+			}
+			if ( result.cardName == 'JCB' ) {
+				$("#ccard_number").mask("9999 9999 9999 9999");
+			}
+			if ( result.cardName == 'Diners Club' ) {
+				$("#ccard_number").mask("999 999999 9999");
+			}
+
+        });
+
+        // Run jQuery.cardcheck on the input
+        $('.card input').cardcheck({
+            callback: function(result) {
+
+                var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
+                    message = '',
+                    types = '';
+
+                // Get the names of all accepted card types to use in the status message.
+                for (i in result.option.types) {
+                    types += result.option.types[i].name + ", ";
+                }
+                types = types.substring(0, types.length-2);
+
+                // Set status message
+                if (result.len < 1) {
+                    message = 'Please provide a credit card number.';
+                } else if (!result.cardClass) {
+                    message = 'We accept the following types of cards: ' + types + '.';
+                } else if (!result.validLen) {
+                    message = 'Please check that this number matches your ' + result.cardName + ' (it appears to be the wrong number of digits.)';
+                } else if (!result.validLuhn) {
+                    message = 'Please check that this number matches your ' + result.cardName + ' (did you mistype a digit?)';
+                } else {
+                    message = 'Great, looks like a valid ' + result.cardName + '.';
+                }
+
+                // Show credit card icon
+                $('.card .card_icon').removeClass().addClass('card_icon ' + result.cardClass);
+
+                // Show status message
+                $('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+
+            }
+        });
+    });
