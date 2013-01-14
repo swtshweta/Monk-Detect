@@ -45,8 +45,7 @@
             var _option = $({}, defaults);
             _option.callback = option;
             option = _option;
-        }
-        else {
+        } else {
             option = $.extend({}, defaults, option);
         }
 
@@ -86,13 +85,13 @@
     defaults = $.fn.cardcheck.option = {
         checkLuhn: function(num) {
             // http://en.wikipedia.org/wiki/Luhn_algorithm
-            var len = num.length;
+            var len = num.length,
+			total = 0,
+			i;
             if (!num || !len) {
                 return false;
             }
             num = num.split('').reverse();
-            var total = 0,
-                i;
             for (i = 0; i < len; i++) {
                 num[i] = window.parseInt(num[i], 10);
                 total += i % 2 ? 2 * num[i] - (num[i] > 4 ? 9 : 0) : num[i];
@@ -115,7 +114,7 @@
                 name: 'American Express',
                 className: 'amex',
                 checkType: function(num) {
-                    return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'
+                    return num.substr(0, 2) === '34' || num.substr(0, 2) === '37';
                 },
                 checkLength: function(len) {
                     return len === 15;
@@ -139,7 +138,7 @@
                 className: 'discover',
                 checkType:  function(num) {
                     if (num.charAt(0) === '6') {
-                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num) >= '622126' && parseInt(num) <= '622925')
+                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num, 10) >= '622126' && parseInt(num, 10) <= '622925');
                     }
                     return false;
                 },
@@ -193,7 +192,8 @@ jQuery(function($) {
 
                 var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
                     message = '',
-                    types = '';
+                    types = '',
+					i;
 
                 // Get the names of all accepted card types to use in the status message.
                 for (i in result.option.types) {
@@ -213,22 +213,22 @@ jQuery(function($) {
                 } else {
                     message = 'Great, looks like a valid ' + result.cardName + '.';
 					if ( result.validLen ) {
-						if ( result.cardName == 'Visa' ) { //if the card is Visa
+						if ( result.cardName === 'Visa' ) { //if the card is Visa
 							$("#ccard_number").mask("9999-9999-9999-9?999");
 						}
-						if ( result.cardName == 'American Express' ) { //if the card is American Express
+						if ( result.cardName === 'American Express' ) { //if the card is American Express
 							$("#ccard_number").mask("999-999999-999999");
 						}
-						if ( result.cardName == 'MasterCard' ) { //if the card is MasterCard
+						if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'Discover' ) { //if the card is Discover
+						if ( result.cardName === 'Discover' ) { //if the card is Discover
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'JCB' ) { //if the card is JCB
+						if ( result.cardName === 'JCB' ) { //if the card is JCB
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
-						if ( result.cardName == 'Diners Club' ) { //if the card is Diners Club
+						if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
 							$("#ccard_number").mask("999-999999-99999");
 						}
 					}
