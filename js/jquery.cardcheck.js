@@ -203,15 +203,15 @@ jQuery(function($) {
 
                 // Set status message
                 if (result.len < 1) {
-                    message = 'Please provide a credit card number.';
+                    message = 'Please enter a credit card number.';
                 } else if (!result.cardClass) {
-                    message = 'We accept the following types of cards: ' + types + '.';
+                    message = 'We accept the following card types: ' + types + '.';
                 } else if (!result.validLen) {
-                    message = 'Please check that this number matches your ' + result.cardName + ' (it appears to be the wrong number of digits.)';
+                    message = 'It appears to be wrong number of digit. Please check that this number matches your ' + result.cardName;
                 } else if (!result.validLuhn) {
-                    message = 'Please check that this number matches your ' + result.cardName + ' (did you mistype a digit?)';
+                    message = 'Did you mistype a digit as this number matches your ' + result.cardName;
                 } else {
-                    message = 'Great, looks like a valid ' + result.cardName + '.';
+                    message = 'It looks like a valid ' + result.cardName + '.';
 					if ( result.validLen ) {
 						if ( result.cardName === 'Visa' ) { //if the card is Visa
 							$("#ccard_number").mask("9999-9999-9999-9?999");
