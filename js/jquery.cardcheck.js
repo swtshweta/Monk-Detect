@@ -207,9 +207,9 @@ jQuery(function($) {
                 } else if (!result.cardClass) {
                     message = 'We accept the following card types: ' + types + '.';
                 } else if (!result.validLen) {
-                    message = 'It appears to be wrong number of digit. Please check that this number matches your ' + result.cardName;
+                    message = 'It appears to be wrong number of digit. Please check that this number matches your "' + result.cardName + '" card';
                 } else if (!result.validLuhn) {
-                    message = 'Did you mistype a digit as this number matches your ' + result.cardName;
+                    message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
                 } else {
                     message = 'It looks like a valid ' + result.cardName + '.';
 					if ( result.validLen ) {
