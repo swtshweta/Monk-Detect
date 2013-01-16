@@ -23,7 +23,7 @@ jQuery(function($) {
 
                 // Getting the names of all accepted card types.
                 for (i in result.option.types) {
-                    types += result.option.types[i].name + ", ";
+                    types += result.option.types[i].cardName + ", ";
                 }
                 types = types.substring(0, types.length-2);
 
@@ -57,6 +57,9 @@ jQuery(function($) {
 						if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
 							$("#ccard_number").mask("999-999999-99999");
 						}
+						if ( result.cardName === 'Maestro' ) { //if the card is Maestro
+							$("#ccard_number").mask("9999-9999-9999?-9999999");
+						}
 					}
                 }
 
@@ -87,7 +90,7 @@ jQuery(function($) {
 
         // Get matched type based on credit card number
         $.each(ccard, function(index, card) {
-            if (card.checkType(num)) {
+            if (card.typeCheck(num)) {
                 type = index;
                 return false;
             }
@@ -96,10 +99,10 @@ jQuery(function($) {
         // If number, ccard, and a matched type
         if (num && ccard && ccard[type]) {
             // Check card length
-            validLen = ccard[type].checkLength(len);
+            validLen = ccard[type].lengthCheck(len);
 
             // Check Luhn Algorithm
-            validLuhn = defaultvalue.checkLuhn(num);
+            validLuhn = defaultvalue.luhnCheck(num);
         }
 
         return {
@@ -124,7 +127,7 @@ jQuery(function($) {
         return this.bind('keyup', function() {
             var ccard = option.types || {},
                 num = this.value.replace(/\D+/g, ''), // strip all non-digits
-                name = '',
+                cardName = '',
                 className = '',
 
             // Check card
@@ -134,7 +137,7 @@ jQuery(function($) {
 
             // Assign className based on matched type
             if (typeof check.type === "number") {
-                name = ccard[check.type].name;
+                cardName = ccard[check.type].cardName;
                 className = ccard[check.type].className;
             }
 
@@ -142,7 +145,7 @@ jQuery(function($) {
             option.callback.call(this, {
                 num: num,
                 len: num.length,
-                cardName: name,
+                cardName: cardName,
                 cardClass: className,
                 validLen: check.validLen,
                 validLuhn: check.validLuhn,
@@ -154,7 +157,7 @@ jQuery(function($) {
 
     // Plugin Options
     defaultvalue = $.fn.cardchecker.option = {
-        checkLuhn: function(num) {
+        luhnCheck: function(num) {
             // http://en.wikipedia.org/wiki/Luhn_algorithm
             var len = num.length,
 			total = 0,
@@ -169,53 +172,59 @@ jQuery(function($) {
             }
             return total % 10 === 0;
         },
-        // http://en.wikipedia.org/wiki/List_of_Bank_Identification_Numbers
+        // http://en.wikipedia.org/wiki/Bank_card_number
         types: [
             {
-                name: 'Visa',
+                cardName: 'Visa',
                 className: 'visa',
-                checkType: function(num) { return num.charAt(0) === '4'; },
-                checkLength: function(len) { return len === 13 || len === 16; }
+                typeCheck: function(num) { return num.charAt(0) === '4'; },
+                lengthCheck: function(len) { return len === 13 || len === 16; }
             },
             {
-                name: 'American Express',
+                cardName: 'American Express',
                 className: 'amex',
-                checkType: function(num) { return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'; },
-                checkLength: function(len) { return len === 15; }
+                typeCheck: function(num) { return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'; },
+                lengthCheck: function(len) { return len === 15; }
             },
             {
-                name: 'MasterCard',
+                cardName: 'MasterCard',
                 className: 'mastercard',
-                checkType: function(num) {
+                typeCheck: function(num) {
                     if (num.charAt(0) === '5') {
                         return num.charAt(1) >= 1 && num.charAt(1) <= 5;
                     }
                     return false;
                 },
-                checkLength: function(len) { return len === 16; }
+                lengthCheck: function(len) { return len === 16; }
             },
             {
-                name: 'Discover',
+                cardName: 'Discover',
                 className: 'discover',
-                checkType:  function(num) {
+                typeCheck:  function(num) {
                     if (num.charAt(0) === '6') {
                         return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num, 10) >= '622126' && parseInt(num, 10) <= '622925');
                     }
                     return false;
                 },
-                checkLength: function(len) { return len === 16; }
+                lengthCheck: function(len) { return len === 16; }
             },
             {
-                name: 'JCB',
+                cardName: 'JCB',
                 className: 'jcb',
-                checkType:  function(num) { return num.substr(0, 2) === '35'; },
-                checkLength: function(len) { return len === 16; }
+                typeCheck:  function(num) { return num.substr(0, 2) === '35'; },
+                lengthCheck: function(len) { return len === 16; }
             },
             {
-                name: 'Diners Club',
+                cardName: 'Diners Club',
                 className: 'diners',
-                checkType:  function(num) { return num.substr(0, 2) === '36' || num.substr(0, 2) === '38'; },
-                checkLength: function(len) { return len === 14; }
+                typeCheck:  function(num) { return num.substr(0, 2) === '36' || num.substr(0, 2) === '38'; },
+                lengthCheck: function(len) { return len === 14; }
+            },
+			{
+                cardName: 'Maestro',
+                className: 'maestro',
+                typeCheck:  function(num) { return num.substr(0, 4) === '5018' || num.substr(0, 4) === '5020' || num.substr(0, 4) === '5038' || num.substr(0, 4) === '5893' || num.substr(0, 4) === '6304' || num.substr(0, 4) === '6759' || num.substr(0, 4) === '6761' || num.substr(0, 4) === '6762' || num.substr(0, 4) === '6763' || num.substr(0, 4) === '0604'; },
+                lengthCheck: function(len) { return len === 12 || len === 13 || len === 14 || len === 15 || len === 16 || len === 17 || len === 18 || len === 19 ; }
             }
         ],
         callback: $.noop

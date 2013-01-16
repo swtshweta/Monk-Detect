@@ -26,6 +26,7 @@
 .card .card_icon.discover   { background-position: -165px 0 !important; display: inline-block; }
 .card .card_icon.jcb   { background-position: -660px 0 !important; display: inline-block; }
 .card .card_icon.diners  { background-position: -220px 0 !important; display: inline-block; }
+.card .card_icon.maestro  { background-position: -335px 0 !important; display: inline-block; }
 
 /* --- Card Status --- */
 .card .status_icon {
