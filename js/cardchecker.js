@@ -3,6 +3,7 @@ jQuery(function($) {
         // hiding the status as the user focuses on the credit card input field
         $('.card input').bind('focus', function() {
 			$("#ccard_number").unmask();//unmasking the text field as user starts typing
+			$('.card .cvv_icon').html(''); //removing cvv image
             $('.card .status').hide();
         });
 
@@ -60,6 +61,9 @@ jQuery(function($) {
 						if ( result.cardName === 'Maestro' ) { //if the card is Maestro
 							$("#ccard_number").mask("9999-9999-9999?-9999999");
 						}
+
+						// Show cvv icon
+						 $('.card .cvv_icon').html('<img src="images/' + result.cvvName + '" />');
 					}
                 }
 
@@ -67,7 +71,7 @@ jQuery(function($) {
                 $('.card .card_icon').removeClass().addClass('card_icon ' + result.cardClass);
 
                 // Show status message
-                $('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+                //$('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
 
             }
         });
@@ -129,6 +133,7 @@ jQuery(function($) {
                 num = this.value.replace(/\D+/g, ''), // strip all non-digits
                 cardName = '',
                 className = '',
+				cvvName ='',
 
             // Check card
             check = $.cardchecker({
@@ -139,6 +144,7 @@ jQuery(function($) {
             if (typeof check.type === "number") {
                 cardName = ccard[check.type].cardName;
                 className = ccard[check.type].className;
+				cvvName = ccard[check.type].cvvName;
             }
 
             // Invoke callback
@@ -147,6 +153,7 @@ jQuery(function($) {
                 len: num.length,
                 cardName: cardName,
                 cardClass: className,
+				cvvName: cvvName,
                 validLen: check.validLen,
                 validLuhn: check.validLuhn,
                 option: option
@@ -177,18 +184,21 @@ jQuery(function($) {
             {
                 cardName: 'Visa',
                 className: 'visa',
+				cvvName: 'visa.gif',
                 typeCheck: function(num) { return num.charAt(0) === '4'; },
                 lengthCheck: function(len) { return len === 13 || len === 16; }
             },
             {
                 cardName: 'American Express',
                 className: 'amex',
+				cvvName: 'amx.gif',
                 typeCheck: function(num) { return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'; },
                 lengthCheck: function(len) { return len === 15; }
             },
             {
                 cardName: 'MasterCard',
                 className: 'mastercard',
+				cvvName: 'mastercard.gif',
                 typeCheck: function(num) {
                     if (num.charAt(0) === '5') {
                         return num.charAt(1) >= 1 && num.charAt(1) <= 5;
@@ -200,6 +210,7 @@ jQuery(function($) {
             {
                 cardName: 'Discover',
                 className: 'discover',
+				cvvName: 'discover.gif',
                 typeCheck:  function(num) {
                     if (num.charAt(0) === '6') {
                         return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num, 10) >= '622126' && parseInt(num, 10) <= '622925');
@@ -211,18 +222,21 @@ jQuery(function($) {
             {
                 cardName: 'JCB',
                 className: 'jcb',
+				cvvName: 'jcb.png',
                 typeCheck:  function(num) { return num.substr(0, 2) === '35'; },
                 lengthCheck: function(len) { return len === 16; }
             },
             {
                 cardName: 'Diners Club',
                 className: 'diners',
+				cvvName: 'dinersclub.jpg',
                 typeCheck:  function(num) { return num.substr(0, 2) === '36' || num.substr(0, 2) === '38'; },
                 lengthCheck: function(len) { return len === 14; }
             },
 			{
                 cardName: 'Maestro',
                 className: 'maestro',
+				cvvName: 'maestro.jpg',
                 typeCheck:  function(num) { return num.substr(0, 4) === '5018' || num.substr(0, 4) === '5020' || num.substr(0, 4) === '5038' || num.substr(0, 4) === '5893' || num.substr(0, 4) === '6304' || num.substr(0, 4) === '6759' || num.substr(0, 4) === '6761' || num.substr(0, 4) === '6762' || num.substr(0, 4) === '6763' || num.substr(0, 4) === '0604'; },
                 lengthCheck: function(len) { return len === 12 || len === 13 || len === 14 || len === 15 || len === 16 || len === 17 || len === 18 || len === 19 ; }
             }

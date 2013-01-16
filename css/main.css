@@ -14,6 +14,15 @@
 	text-indent: -999px;
 }
 
+.card .cvv_icon{
+	vertical-align: bottom;
+	height: 145px;
+	width: 225px;
+	overflow: hidden;
+	text-align: left;
+	text-indent: -999px;
+}
+
 /* --- Card Icon --- */
 .card .card_icon {
 	background: transparent url('../images/sprite-cards.png') no-repeat 0 0;
