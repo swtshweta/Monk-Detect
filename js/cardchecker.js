@@ -71,7 +71,7 @@ jQuery(function($) {
                 $('.card .card_icon').removeClass().addClass('card_icon ' + result.cardClass);
 
                 // Show status message
-                //$('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+                $('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
 
             }
         });
