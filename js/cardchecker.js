@@ -2,8 +2,17 @@ jQuery(function($) {
 
         // hiding the status as the user focuses on the credit card input field
         $('#ccard_number').bind('focus', function() {
-			$("#ccard_number").unmask();//unmasking the text field as user starts typing
-			$('.card .cvv_icon').html(''); //removing cvv image
+
+			//unmasking the text field as user starts typing
+			$("#ccard_number").unmask();
+
+			//removing cvv image
+			$('.card .cvv_icon').html('');
+
+			//making cvv field balnk as soon as user starts typing for cc number
+			$('#cvv').val('');
+
+			//hiding status
             $('.card .status').hide();
         });
 
@@ -33,13 +42,15 @@ jQuery(function($) {
                     message = 'Please enter a credit card number.';
                 } else if (!result.cardClass) {
                     message = 'We accept the following card types: ' + types + '.';
-                } else if (!result.validLen) {
+                } else if (!result.validLen) { //if entered wrong number of digits
                     message = 'It appears to be wrong number of digit. Please check that this number matches your "' + result.cardName + '" card';
-                } else if (!result.validLuhn) {
+                } else if (!result.validLuhn) { //if mistype any digit
                     message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
                 } else {
                     message = 'It looks like a valid ' + result.cardName + '.';
 					if ( result.validLen ) {
+
+						//applying masking
 						if ( result.cardName === 'Visa' ) { //if the card is Visa
 							$("#ccard_number").mask("9999-9999-9999-9?999");
 						}
@@ -118,6 +129,7 @@ jQuery(function($) {
 
     // Plugin Helper
     $.fn.cardchecker = function(option) {
+		
         // Allow for just a callback to be provided or extend method that merges the contents of two or more objects, storing the result in the first object.
         if (option && $.isFunction(option)) {
             var _option = $({}, defaultvalue);
