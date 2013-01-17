@@ -1,20 +1,20 @@
 jQuery(function($) {
 
         // hiding the status as the user focuses on the credit card input field
-        $('.card input').bind('focus', function() {
+        $('#ccard_number').bind('focus', function() {
 			$("#ccard_number").unmask();//unmasking the text field as user starts typing
 			$('.card .cvv_icon').html(''); //removing cvv image
             $('.card .status').hide();
         });
 
         // showing the status when the user tabs or clicks away from the credit card input field
-        $('.card input').bind('blur', function() {
+        $('#ccard_number').bind('blur', function() {
             $('.card .status').show();
 
         });
 
         // checking input value entered using jquery.cardchecker
-        $('.card input').cardchecker({
+        $('#ccard_number').cardchecker({
             callback: function(result) {
 
                 var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
@@ -44,7 +44,7 @@ jQuery(function($) {
 							$("#ccard_number").mask("9999-9999-9999-9?999");
 						}
 						if ( result.cardName === 'American Express' ) { //if the card is American Express
-							$("#ccard_number").mask("999-999999-999999");
+							$("#ccard_number").mask("9999-999999-99999");
 						}
 						if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
 							$("#ccard_number").mask("9999-9999-9999-9999");
@@ -56,7 +56,7 @@ jQuery(function($) {
 							$("#ccard_number").mask("9999-9999-9999-9999");
 						}
 						if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
-							$("#ccard_number").mask("999-999999-99999");
+							$("#ccard_number").mask("9999-999999-9999");
 						}
 						if ( result.cardName === 'Maestro' ) { //if the card is Maestro
 							$("#ccard_number").mask("9999-9999-9999?-9999999");
