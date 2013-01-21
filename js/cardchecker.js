@@ -1,93 +1,3 @@
-jQuery(function($) {
-
-        // hiding the status as the user focuses on the credit card input field
-        $('#ccard_number').bind('focus', function() {
-
-			//unmasking the text field as user starts typing
-			$("#ccard_number").unmask();
-
-			//removing cvv image
-			$('.card .cvv_icon').html('');
-
-			//making cvv field balnk as soon as user starts typing for cc number
-			$('#cvv').val('');
-
-			//hiding status
-            $('.card .status').hide();
-        });
-
-        // showing the status when the user tabs or clicks away from the credit card input field
-        $('#ccard_number').bind('blur', function() {
-            $('.card .status').show();
-
-        });
-
-        // checking input value entered using jquery.cardchecker
-        $('#ccard_number').cardchecker({
-            callback: function(result) {
-
-                var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
-                    message = '',
-                    types = '',
-					i;
-
-                // Getting the names of all accepted card types.
-                for (i in result.option.types) {
-                    types += result.option.types[i].cardName + ", ";
-                }
-                types = types.substring(0, types.length-2);
-
-                // Set the status message
-                if (result.len < 1) {
-                    message = 'Please enter a credit card number.';
-                } else if (!result.cardClass) {
-                    message = 'We accept the following card types: ' + types + '.';
-                } else if (!result.validLen) { //if entered wrong number of digits
-                    message = 'It appears to be wrong number of digit. Please check that this number matches your "' + result.cardName + '" card';
-                } else if (!result.validLuhn) { //if mistype any digit
-                    message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
-                } else {
-                    message = 'It looks like a valid ' + result.cardName + '.';
-					if ( result.validLen ) {
-
-						//applying masking
-						if ( result.cardName === 'Visa' ) { //if the card is Visa
-							$("#ccard_number").mask("9999-9999-9999-9?999");
-						}
-						if ( result.cardName === 'American Express' ) { //if the card is American Express
-							$("#ccard_number").mask("9999-999999-99999");
-						}
-						if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
-							$("#ccard_number").mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'Discover' ) { //if the card is Discover
-							$("#ccard_number").mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'JCB' ) { //if the card is JCB
-							$("#ccard_number").mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
-							$("#ccard_number").mask("9999-999999-9999");
-						}
-						if ( result.cardName === 'Maestro' ) { //if the card is Maestro
-							$("#ccard_number").mask("9999-9999-9999?-9999999");
-						}
-
-						// Show cvv icon
-						 $('.card .cvv_icon').html('<img src="images/' + result.cvvName + '" />');
-					}
-                }
-
-                // Show credit card icon
-                $('.card .card_icon').removeClass().addClass('card_icon ' + result.cardClass);
-
-                // Show status message
-                $('.card .status').removeClass('invalid valid').addClass(status).children('.status_message').text(message);
-
-            }
-        });
-    });
-
 /*
  * function for validating and formatting credit cards
  */
@@ -129,7 +39,7 @@ jQuery(function($) {
 
     // Plugin Helper
     $.fn.cardchecker = function(option) {
-		
+
         // Allow for just a callback to be provided or extend method that merges the contents of two or more objects, storing the result in the first object.
         if (option && $.isFunction(option)) {
             var _option = $({}, defaultvalue);
