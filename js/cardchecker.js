@@ -84,6 +84,88 @@
         });
     };
 
+    // Plugin Options
+    defaultvalue = $.fn.cardchecker.option = {
+        luhnCheck: function(num) {
+            // http://en.wikipedia.org/wiki/Luhn_algorithm
+            var len = num.length,
+			total = 0,
+			i;
+            if (!num || !len) {
+                return false;
+            }
+            num = num.split('').reverse();
+            for (i = 0; i < len; i++) {
+                num[i] = window.parseInt(num[i], 10);
+                total += i % 2 ? 2 * num[i] - (num[i] > 4 ? 9 : 0) : num[i];
+            }
+            return total % 10 === 0;
+        },
+        // http://en.wikipedia.org/wiki/Bank_card_number
+        types: [
+            {
+                cardName: 'Visa',
+                className: 'visa',
+				cvvName: 'visa.gif',
+                typeCheck: function(num) { return num.charAt(0) === '4'; },
+                lengthCheck: function(len) { return len === 13 || len === 16; }
+            },
+            {
+                cardName: 'American Express',
+                className: 'amex',
+				cvvName: 'amx.gif',
+                typeCheck: function(num) { return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'; },
+                lengthCheck: function(len) { return len === 15; }
+            },
+            {
+                cardName: 'MasterCard',
+                className: 'mastercard',
+				cvvName: 'mastercard.gif',
+                typeCheck: function(num) {
+                    if (num.charAt(0) === '5') {
+                        return num.charAt(1) >= 1 && num.charAt(1) <= 5;
+                    }
+                    return false;
+                },
+                lengthCheck: function(len) { return len === 16; }
+            },
+            {
+                cardName: 'Discover',
+                className: 'discover',
+				cvvName: 'discover.gif',
+                typeCheck:  function(num) {
+                    if (num.charAt(0) === '6') {
+                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num, 10) >= '622126' && parseInt(num, 10) <= '622925');
+                    }
+                    return false;
+                },
+                lengthCheck: function(len) { return len === 16; }
+            },
+            {
+                cardName: 'JCB',
+                className: 'jcb',
+				cvvName: 'jcb.png',
+                typeCheck:  function(num) { return num.substr(0, 2) === '35'; },
+                lengthCheck: function(len) { return len === 16; }
+            },
+            {
+                cardName: 'Diners Club',
+                className: 'diners',
+				cvvName: 'dinersclub.jpg',
+                typeCheck:  function(num) { return num.substr(0, 2) === '36' || num.substr(0, 2) === '38'; },
+                lengthCheck: function(len) { return len === 14; }
+            },
+			{
+                cardName: 'Maestro',
+                className: 'maestro',
+				cvvName: 'maestro.jpg',
+                typeCheck:  function(num) { return num.substr(0, 4) === '5018' || num.substr(0, 4) === '5020' || num.substr(0, 4) === '5038' || num.substr(0, 4) === '5893' || num.substr(0, 4) === '6304' || num.substr(0, 4) === '6759' || num.substr(0, 4) === '6761' || num.substr(0, 4) === '6762' || num.substr(0, 4) === '6763' || num.substr(0, 4) === '0604'; },
+                lengthCheck: function(len) { return len === 12 || len === 13 || len === 14 || len === 15 || len === 16 || len === 17 || len === 18 || len === 19 ; }
+            }
+        ],
+        callback: $.noop
+    };
+
 	$.fn.cardvalidator = function(options) {
 		var defaults = {
 			creditCardId: '#ccard_number',
@@ -180,87 +262,5 @@
         });
 
 	};
-
-    // Plugin Options
-    defaultvalue = $.fn.cardchecker.option = {
-        luhnCheck: function(num) {
-            // http://en.wikipedia.org/wiki/Luhn_algorithm
-            var len = num.length,
-			total = 0,
-			i;
-            if (!num || !len) {
-                return false;
-            }
-            num = num.split('').reverse();
-            for (i = 0; i < len; i++) {
-                num[i] = window.parseInt(num[i], 10);
-                total += i % 2 ? 2 * num[i] - (num[i] > 4 ? 9 : 0) : num[i];
-            }
-            return total % 10 === 0;
-        },
-        // http://en.wikipedia.org/wiki/Bank_card_number
-        types: [
-            {
-                cardName: 'Visa',
-                className: 'visa',
-				cvvName: 'visa.gif',
-                typeCheck: function(num) { return num.charAt(0) === '4'; },
-                lengthCheck: function(len) { return len === 13 || len === 16; }
-            },
-            {
-                cardName: 'American Express',
-                className: 'amex',
-				cvvName: 'amx.gif',
-                typeCheck: function(num) { return num.substr(0, 2) === '34' || num.substr(0, 2) === '37'; },
-                lengthCheck: function(len) { return len === 15; }
-            },
-            {
-                cardName: 'MasterCard',
-                className: 'mastercard',
-				cvvName: 'mastercard.gif',
-                typeCheck: function(num) {
-                    if (num.charAt(0) === '5') {
-                        return num.charAt(1) >= 1 && num.charAt(1) <= 5;
-                    }
-                    return false;
-                },
-                lengthCheck: function(len) { return len === 16; }
-            },
-            {
-                cardName: 'Discover',
-                className: 'discover',
-				cvvName: 'discover.gif',
-                typeCheck:  function(num) {
-                    if (num.charAt(0) === '6') {
-                        return num.substr(0, 2) === '65' || num.substr(0, 4) === '6011' || num.substr(0, 3) === '644' || (num.substr(0, 1) === '6' && parseInt(num, 10) >= '622126' && parseInt(num, 10) <= '622925');
-                    }
-                    return false;
-                },
-                lengthCheck: function(len) { return len === 16; }
-            },
-            {
-                cardName: 'JCB',
-                className: 'jcb',
-				cvvName: 'jcb.png',
-                typeCheck:  function(num) { return num.substr(0, 2) === '35'; },
-                lengthCheck: function(len) { return len === 16; }
-            },
-            {
-                cardName: 'Diners Club',
-                className: 'diners',
-				cvvName: 'dinersclub.jpg',
-                typeCheck:  function(num) { return num.substr(0, 2) === '36' || num.substr(0, 2) === '38'; },
-                lengthCheck: function(len) { return len === 14; }
-            },
-			{
-                cardName: 'Maestro',
-                className: 'maestro',
-				cvvName: 'maestro.jpg',
-                typeCheck:  function(num) { return num.substr(0, 4) === '5018' || num.substr(0, 4) === '5020' || num.substr(0, 4) === '5038' || num.substr(0, 4) === '5893' || num.substr(0, 4) === '6304' || num.substr(0, 4) === '6759' || num.substr(0, 4) === '6761' || num.substr(0, 4) === '6762' || num.substr(0, 4) === '6763' || num.substr(0, 4) === '0604'; },
-                lengthCheck: function(len) { return len === 12 || len === 13 || len === 14 || len === 15 || len === 16 || len === 17 || len === 18 || len === 19 ; }
-            }
-        ],
-        callback: $.noop
-    };
 
 })(jQuery, window, document );

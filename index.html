@@ -32,7 +32,12 @@
   <script type="text/javascript" src="js/jquery.maskedinput-1.3.min.js"></script>
   <script type="text/javascript" src="js/cardchecker.js"></script>
   <script type="text/javascript">
-	  $('.card').cardvalidator();
+	  $('.card').cardvalidator({
+			creditCardId: '#ccard_number',
+			cvvIconClass: '.cvv_icon',
+			cardStatusClass: '.status',
+			cardIconClass: '.card_icon'
+    });
   </script>
 </body>
 
