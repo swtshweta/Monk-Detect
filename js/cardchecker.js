@@ -171,7 +171,8 @@
 			creditCardId: '#ccard_number',
 			cvvIconClass: '.cvv_icon',
 			cardStatusClass: '.status',
-			cardIconClass: '.card_icon'
+			cardIconClass: '.card_icon',
+			cardMasking: 1
 		};
 
 		// Extend our default options with those provided.
@@ -222,29 +223,33 @@
                     message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
                 } else {
                     message = 'It looks like a valid ' + result.cardName + '.';
+
 					if ( result.validLen ) {
 
-						//applying masking
-						if ( result.cardName === 'Visa' ) { //if the card is Visa
-							$(opts.creditCardId).mask("9999-9999-9999-9?999");
-						}
-						if ( result.cardName === 'American Express' ) { //if the card is American Express
-							$(opts.creditCardId).mask("9999-999999-99999");
-						}
-						if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
-							$(opts.creditCardId).mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'Discover' ) { //if the card is Discover
-							$(opts.creditCardId).mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'JCB' ) { //if the card is JCB
-							$(opts.creditCardId).mask("9999-9999-9999-9999");
-						}
-						if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
-							$(opts.creditCardId).mask("9999-999999-9999");
-						}
-						if ( result.cardName === 'Maestro' ) { //if the card is Maestro
-							$(opts.creditCardId).mask("9999-9999-9999?-9999999");
+						//credit card masking is set to 1
+						if ( opts.cardMasking === 1 ) {
+							//applying masking
+							if ( result.cardName === 'Visa' ) { //if the card is Visa
+								$(opts.creditCardId).mask("9999-9999-9999-9?999");
+							}
+							if ( result.cardName === 'American Express' ) { //if the card is American Express
+								$(opts.creditCardId).mask("9999-999999-99999");
+							}
+							if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
+								$(opts.creditCardId).mask("9999-9999-9999-9999");
+							}
+							if ( result.cardName === 'Discover' ) { //if the card is Discover
+								$(opts.creditCardId).mask("9999-9999-9999-9999");
+							}
+							if ( result.cardName === 'JCB' ) { //if the card is JCB
+								$(opts.creditCardId).mask("9999-9999-9999-9999");
+							}
+							if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
+								$(opts.creditCardId).mask("9999-999999-9999");
+							}
+							if ( result.cardName === 'Maestro' ) { //if the card is Maestro
+								$(opts.creditCardId).mask("9999-9999-9999?-9999999");
+							}
 						}
 
 						// Show cvv icon
