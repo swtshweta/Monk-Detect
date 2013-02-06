@@ -13,17 +13,17 @@
     <div class="card">
       <label for="card_number">Enter your Credit Card Number:</label>
       <p>
-        <input name="card_number" type="text" value="" id="ccard_number" />
-        <span class="card_icon"></span>
+        <input name="card_number" type="text" value="" id="ccard_number" maxlength="20" />
+        <span class="card_icon" id="card_icon"></span>
       </p>
-      <p class="status">
+      <p class="status" id="status">
         <span class="status_icon"></span>
         <span class="status_message"></span>
       </p>
 	  <label for="cvv">Enter CVV/CID Number: </label>
 	  <p>
 		<input id="cvv" type="text" maxlength="3" name="cvv" />
-		<span class="cvv_icon"></span>
+		<span class="cvv_icon" id="cvv_icon"></span>
 	  </p>
     </div>
   </form>
@@ -33,11 +33,11 @@
   <script type="text/javascript" src="js/cardchecker.js"></script>
   <script type="text/javascript">
 	  $('.card').cardvalidator({
-			creditCardId: '#ccard_number',
-			cvvIconClass: '.cvv_icon',
-			cardStatusClass: '.status',
-			cardIconClass: '.card_icon',
-			cardMasking: 0
+			creditCardId: 'ccard_number', //id for creditcard text field
+			cvvIconClass: 'cvv_icon',//id for cvv image text field
+			cardStatusClass: 'status',//id for status text field for displaying error or succcess messages
+			cardIconClass: 'card_icon',//id for creditcard icon text field.used for displaying card icon
+			cardMasking: 1 //option whether user wants masking or not. default is true
     });
   </script>
 </body>

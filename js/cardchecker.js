@@ -168,10 +168,10 @@
 
 	$.fn.cardvalidator = function(options) {
 		var defaults = {
-			creditCardId: '#ccard_number',
-			cvvIconClass: '.cvv_icon',
-			cardStatusClass: '.status',
-			cardIconClass: '.card_icon',
+			creditCardId: 'ccard_number',
+			cvvIconClass: 'cvv_icon',
+			cardStatusClass: 'status',
+			cardIconClass: 'card_icon',
 			cardMasking: 1
 		};
 
@@ -179,26 +179,26 @@
 		var opts = $.extend(defaults, options);
 
         // hiding the status as the user focuses on the credit card input field
-        $(opts.creditCardId).bind('focus', function() {
+        $('#' + opts.creditCardId).bind('focus', function() {
 
 			//unmasking the text field as user starts typing
-			$(opts.creditCardId).unmask();
+			$('#' + opts.creditCardId).unmask();
 
 			//removing cvv image
-			$(opts.cvvIconClass).html('');
+			$('#' + opts.cvvIconClass).html('');
 
 			//hiding status
-            $(opts.cardStatusClass).hide();
+            $('#' + opts.cardStatusClass).hide();
         });
 
         // showing the status when the user tabs or clicks away from the credit card input field
-        $(opts.creditCardId).bind('blur', function() {
-            $(opts.cardStatusClass).show();
+        $('#' + opts.creditCardId).bind('blur', function() {
+            $('#' + opts.cardStatusClass).show();
 
         });
 
         // checking input value entered using jquery.cardchecker
-        $(opts.creditCardId).cardchecker({
+        $('#' + opts.creditCardId).cardchecker({
             callback: function(result) {
 
                 var status = (result.validLen && result.validLuhn) ? 'valid' : 'invalid',
@@ -230,38 +230,38 @@
 						if ( opts.cardMasking === 1 ) {
 							//applying masking
 							if ( result.cardName === 'Visa' ) { //if the card is Visa
-								$(opts.creditCardId).mask("9999-9999-9999-9?999");
+								$('#' + opts.creditCardId).mask("9999-9999-9999-9?999");
 							}
 							if ( result.cardName === 'American Express' ) { //if the card is American Express
-								$(opts.creditCardId).mask("9999-999999-99999");
+								$('#' + opts.creditCardId).mask("9999-999999-99999");
 							}
 							if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
-								$(opts.creditCardId).mask("9999-9999-9999-9999");
+								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
 							}
 							if ( result.cardName === 'Discover' ) { //if the card is Discover
-								$(opts.creditCardId).mask("9999-9999-9999-9999");
+								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
 							}
 							if ( result.cardName === 'JCB' ) { //if the card is JCB
-								$(opts.creditCardId).mask("9999-9999-9999-9999");
+								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
 							}
 							if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
-								$(opts.creditCardId).mask("9999-999999-9999");
+								$('#' + opts.creditCardId).mask("9999-999999-9999");
 							}
 							if ( result.cardName === 'Maestro' ) { //if the card is Maestro
-								$(opts.creditCardId).mask("9999-9999-9999?-9999999");
+								$('#' + opts.creditCardId).mask("9999-9999-9999?-9999999");
 							}
 						}
 
 						// Show cvv icon
-						 $(opts.cvvIconClass).html('<img src="images/' + result.cvvName + '" />');
+						 $('#' + opts.cvvIconClass).html('<img src="images/' + result.cvvName + '" />');
 					}
                 }
 
                 // Show credit card icon
-                $(opts.cardIconClass).removeClass().addClass('card_icon ' + result.cardClass);
+                $('#' + opts.cardIconClass).removeClass().addClass('card_icon ' + result.cardClass);
 
                 // Show status message
-                $(opts.cardStatusClass).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+                $('#' + opts.cardStatusClass).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
 
             }
         });
