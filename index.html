@@ -34,11 +34,12 @@
 	<script type="text/javascript">
 		$('.card').cardvalidator({
 			creditCardId: 'ccard_number', //id for creditcard text field
-			cvvIconClass: 'cvv_icon',//id for cvv image text field
-			cardStatusClass: 'status',//id for status text field for displaying error or succcess messages
-			cardIconClass: 'card_icon',//id for creditcard icon text field.used for displaying card icon
-			cardMasking: 1 //option whether user wants masking or not. default is true
-		});
+			cvvIconId: 'cvv_icon',//id for cvv image text field
+			cardStatusId: 'status',//id for status text field for displaying error or succcess messages
+			cardIconId: 'card_icon',//id for creditcard icon text field.used for displaying card icon
+			cardMasking: 1, //option whether user wants masking or not. default is true
+			cardTypeAccepted:['Visa', 'MasterCard']
+			});
 	</script>
 </body>
 

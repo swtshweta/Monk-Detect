@@ -12,7 +12,6 @@
 			type,
 			validLen = false,
 			validLuhn = false;
-
 		// Get matched type based on credit card number
 		$.each(ccard, function(index, card) {
 			if (card.typeCheck(num)) {
@@ -168,11 +167,12 @@
 
 	$.fn.cardvalidator = function(options) {
 		var defaults = {
-			creditCardId: 'ccard_number',
-			cvvIconClass: 'cvv_icon',
-			cardStatusClass: 'status',
-			cardIconClass: 'card_icon',
-			cardMasking: 1
+			creditCardId: 'ccard_number', //id for creditcard text field
+			cvvIconId: 'cvv_icon',//id for cvv image text field
+			cardStatusId: 'status',//id for status text field for displaying error or succcess messages
+			cardIconId: 'card_icon',//id for creditcard icon text field.used for displaying card icon
+			cardMasking: 1, //option whether user wants masking or not. default is true
+			cardTypeAccepted:['Visa', 'MasterCard','American Express','Discover','JCB','Diners Club','Maestro'] //option for credit card accepted
 		};
 
 		// Extend our default options with those provided.
@@ -185,15 +185,15 @@
 			$('#' + opts.creditCardId).unmask();
 
 			//removing cvv image
-			$('#' + opts.cvvIconClass).html('');
+			$('#' + opts.cvvIconId).html('');
 
 			//hiding status
-			$('#' + opts.cardStatusClass).hide();
+			$('#' + opts.cardStatusId).hide();
 		});
 
 		// showing the status when the user tabs or clicks away from the credit card input field
 		$('#' + opts.creditCardId).bind('blur', function() {
-			$('#' + opts.cardStatusClass).show();
+			$('#' + opts.cardStatusId).show();
 
 		});
 
@@ -205,10 +205,10 @@
 					message = '',
 					types = '',
 					i;
-
+					//result.option.types
 				// Getting the names of all accepted card types.
-				for (i in result.option.types) {
-					types += result.option.types[i].cardName + ", ";
+				for (i in opts.cardTypeAccepted) {
+					types += opts.cardTypeAccepted[i] + ", ";
 				}
 				types = types.substring(0, types.length-2);
 
@@ -253,15 +253,15 @@
 						}
 
 						// Show cvv icon
-						 $('#' + opts.cvvIconClass).html('<img src="images/' + result.cvvName + '" />');
+						 $('#' + opts.cvvIconId).html('<img src="images/' + result.cvvName + '" />');
 					}
 				}
 
 				// Show credit card icon
-				$('#' + opts.cardIconClass).removeClass().addClass('card_icon ' + result.cardClass);
+				$('#' + opts.cardIconId).removeClass().addClass('card_icon ' + result.cardClass);
 
 				// Show status message
-				$('#' + opts.cardStatusClass).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+				$('#' + opts.cardStatusId).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
 
 			}
 		});
