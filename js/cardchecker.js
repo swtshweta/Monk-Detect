@@ -217,52 +217,58 @@
 					message = 'Please enter a credit card number.';
 				} else if (!result.cardClass) {
 					message = 'We accept the following card types: ' + types + '.';
-				} else if (!result.validLen) { //if entered wrong number of digits
-					message = 'It appears to be wrong number of digit. Please check that this number matches your "' + result.cardName + '" card';
-				} else if (!result.validLuhn) { //if mistype any digit
-					message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
-				} else {
-					message = 'It looks like a valid ' + result.cardName + '.';
+				} 
+				
+				var found = $.inArray(result.cardName, types); //used for checking whether card type matches card accepted array provided by user.
+				
+				//if ( found !== -1 ) { 
+					
+					if (!result.validLen) { //if entered wrong number of digits
+						message = 'It appears to be wrong number of digit. Please check that this number matches your "' + result.cardName + '" card';
+					} else if (!result.validLuhn) { //if mistype any digit
+						message = 'Did you mistype a digit as this number matches your "' + result.cardName + '" card ';
+					} else {
+						message = 'It looks like a valid ' + result.cardName + '.';
 
-					if ( result.validLen ) {
+						if ( result.validLen ) {
 
-						//credit card masking is set to 1
-						if ( opts.cardMasking === 1 ) {
-							//applying masking
-							if ( result.cardName === 'Visa' ) { //if the card is Visa
-								$('#' + opts.creditCardId).mask("9999-9999-9999-9?999");
+							//credit card masking is set to 1
+							if ( opts.cardMasking === 1 ) {
+								//applying masking
+								if ( result.cardName === 'Visa' ) { //if the card is Visa
+									$('#' + opts.creditCardId).mask("9999-9999-9999-9?999");
+								}
+								if ( result.cardName === 'American Express' ) { //if the card is American Express
+									$('#' + opts.creditCardId).mask("9999-999999-99999");
+								}
+								if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
+									$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
+								}
+								if ( result.cardName === 'Discover' ) { //if the card is Discover
+									$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
+								}
+								if ( result.cardName === 'JCB' ) { //if the card is JCB
+									$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
+								}
+								if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
+									$('#' + opts.creditCardId).mask("9999-999999-9999");
+								}
+								if ( result.cardName === 'Maestro' ) { //if the card is Maestro
+									$('#' + opts.creditCardId).mask("9999-9999-9999?-9999999");
+								}
 							}
-							if ( result.cardName === 'American Express' ) { //if the card is American Express
-								$('#' + opts.creditCardId).mask("9999-999999-99999");
-							}
-							if ( result.cardName === 'MasterCard' ) { //if the card is MasterCard
-								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
-							}
-							if ( result.cardName === 'Discover' ) { //if the card is Discover
-								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
-							}
-							if ( result.cardName === 'JCB' ) { //if the card is JCB
-								$('#' + opts.creditCardId).mask("9999-9999-9999-9999");
-							}
-							if ( result.cardName === 'Diners Club' ) { //if the card is Diners Club
-								$('#' + opts.creditCardId).mask("9999-999999-9999");
-							}
-							if ( result.cardName === 'Maestro' ) { //if the card is Maestro
-								$('#' + opts.creditCardId).mask("9999-9999-9999?-9999999");
-							}
+
+							// Show cvv icon
+							 $('#' + opts.cvvIconId).html('<img src="images/' + result.cvvName + '" />');
 						}
-
-						// Show cvv icon
-						 $('#' + opts.cvvIconId).html('<img src="images/' + result.cvvName + '" />');
 					}
-				}
+				
+					// Show credit card icon
+					$('#' + opts.cardIconId).removeClass().addClass('card_icon ' + result.cardClass);
 
-				// Show credit card icon
-				$('#' + opts.cardIconId).removeClass().addClass('card_icon ' + result.cardClass);
-
-				// Show status message
-				$('#' + opts.cardStatusId).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
-
+					// Show status message
+					$('#' + opts.cardStatusId).removeClass('invalid valid').addClass(status).children('.status_message').text(message);
+				//}
 			}
 		});
 
